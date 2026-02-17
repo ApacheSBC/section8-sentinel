@@ -7,6 +7,7 @@ db = SQLAlchemy()
 login_manager = LoginManager()
 login_manager.login_view = "auth.login"
 
+
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
@@ -16,12 +17,16 @@ def create_app():
 
     from .auth.routes import auth_bp
     from .dashboard.routes import dashboard_bp
+    from .dashboard.repos import repos_bp
+    from .ingest.routes import ingest_bp
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(dashboard_bp)
+    app.register_blueprint(repos_bp)
+    app.register_blueprint(ingest_bp)
 
     with app.app_context():
-        from .models import User  # noqa
+        from . import models
         db.create_all()
 
     return app

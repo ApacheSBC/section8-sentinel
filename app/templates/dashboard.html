@@ -4,8 +4,58 @@
   <div class="card-body p-4">
     <h2 class="mb-2">Dashboard</h2>
     <p class="text-muted mb-0">Welcome, {{ user.email }}.</p>
+
     <hr>
-    <p class="mb-0">Next: repo onboarding + ingest Trivy/Gitleaks JSON.</p>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4 class="mb-0">Your Repositories</h4>
+      <a href="/repos/add" class="btn btn-dark btn-sm">Add Repo</a>
+    </div>
+
+    {% if repos %}
+      <ul class="list-group">
+        {% for repo in repos %}
+          <li class="list-group-item">
+            <strong>{{ repo.name }}</strong><br>
+            <small>{{ repo.url }}</small><br>
+            <code>Token: {{ repo.ingest_token }}</code>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-muted">No repositories added yet.</p>
+    {% endif %}
+    <hr>
+<h4 class="mb-3">Latest Findings</h4>
+
+{% if findings %}
+  <div class="table-responsive">
+    <table class="table table-sm align-middle">
+      <thead>
+        <tr>
+          <th>Severity</th>
+          <th>Title</th>
+          <th>Package</th>
+          <th>Installed</th>
+          <th>Fixed</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for f in findings %}
+          <tr>
+            <td><span class="badge bg-secondary">{{ f.severity or "N/A" }}</span></td>
+            <td>{{ f.title }}</td>
+            <td><code>{{ f.pkg or "" }}</code></td>
+            <td>{{ f.installed_version or "" }}</td>
+            <td>{{ f.fixed_version or "" }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <p class="text-muted">No findings yet. Ingest Trivy or Gitleaks results to populate this section.</p>
+{% endif %}
+
   </div>
 </div>
 {% endblock %}

@@ -46,3 +46,39 @@ def ingest_trivy():
 
     db.session.commit()
     return jsonify({"ok": True, "repo": repo.name, "tool": "trivy", "findings": count}), 200
+
+@ingest_bp.route("/gitleaks", methods=["POST"])
+def ingest_gitleaks():
+    repo = get_repo_from_token()
+    if not repo:
+        return jsonify({"error": "unauthorized"}), 401
+
+    data = request.get_json(silent=True)
+    if not data:
+        return jsonify({"error": "invalid json"}), 400
+
+    scan = Scan(repo_id=repo.id, tool="gitleaks", status="success")
+    db.session.add(scan)
+    db.session.flush()
+
+    findings = data if isinstance(data, list) else data.get("findings") or []
+    count = 0
+
+    for f in findings:
+        rule = f.get("RuleID") or f.get("Rule") or "Gitleaks"
+        file_ = f.get("File") or ""
+        line = f.get("StartLine") or f.get("Line") or ""
+        desc = f.get("Description") or ""
+
+        db.session.add(Finding(
+            scan_id=scan.id,
+            severity="HIGH",
+            title=f"Secret detected: {rule} {('- ' + desc) if desc else ''}".strip(),
+            pkg=file_,
+            installed_version=str(line) if line != "" else None,
+            fixed_version=None,
+        ))
+        count += 1
+
+    db.session.commit()
+    return jsonify({"ok": True, "repo": repo.name, "tool": "gitleaks", "findings": count}), 200

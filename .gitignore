@@ -205,3 +205,23 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Python
+__pycache__/
+*.pyc
+
+# virtual environment
+.venv/
+.env
+
+# local database
+instance/
+*.db
+
+# macOS
+.DS_Store
+
+# local scan test payloads
+*_test.json
+trivy*.json
+gitleaks*.json

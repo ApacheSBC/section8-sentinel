@@ -37,6 +37,7 @@
           <th>Package</th>
           <th>Installed</th>
           <th>Fixed</th>
+          <th>Status</th>
         </tr>
       </thead>
       <tbody>
@@ -47,6 +48,15 @@
             <td><code>{{ f.pkg or "" }}</code></td>
             <td>{{ f.installed_version or "" }}</td>
             <td>{{ f.fixed_version or "" }}</td>
+            <td>
+              <form method="post" action="/findings/{{ f.id }}/status" class="mb-0">
+                <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+                  <option value="open" {{ "selected" if (f.status or "open") == "open" else "" }}>Open</option>
+                  <option value="fixed" {{ "selected" if f.status == "fixed" else "" }}>Fixed</option>
+                  <option value="ignored" {{ "selected" if f.status == "ignored" else "" }}>Ignored</option>
+                </select>
+              </form>
+            </td>            
           </tr>
         {% endfor %}
       </tbody>

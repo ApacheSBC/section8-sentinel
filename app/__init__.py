@@ -14,11 +14,11 @@ def create_app():
 
     db.init_app(app)
     login_manager.init_app(app)
-
-    from .auth.routes import auth_bp
-    from .dashboard.routes import dashboard_bp
-    from .dashboard.repos import repos_bp
-    from .ingest.routes import ingest_bp
+    
+from .auth.routes import auth_bp
+from .dashboard import dashboard_bp
+from .dashboard.repos import repos_bp
+from .ingest.routes import ingest_bp
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(dashboard_bp)

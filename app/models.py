@@ -47,6 +47,8 @@ class Finding(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     scan_id = db.Column(db.Integer, db.ForeignKey("scan.id"), nullable=False, index=True)
     severity = db.Column(db.String(20), nullable=True)
+    status = db.Column(db.String(20), nullable=False, default="open")
+    ALLOWED_STATUSES = {"open", "fixed", "ignored"}
     title = db.Column(db.String(500), nullable=False)
     pkg = db.Column(db.String(255), nullable=True)
     installed_version = db.Column(db.String(100), nullable=True)

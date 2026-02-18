@@ -51,12 +51,9 @@ https://section8-sentinel.onrender.com
 * Managed PostgreSQL database
 
 ---
+## Architecture Diagram
 
-## Architecture Overview
-
-User → Web App (Flask) → PostgreSQL Database
-↓
-Security Findings Ingestion
+![Section 8 Sentinel Architecture](docs/architecture-v1.png)
 
 The application handles authentication, stores repository data, and displays findings through a simple dashboard interface.
 

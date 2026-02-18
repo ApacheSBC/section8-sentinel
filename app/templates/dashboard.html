@@ -58,7 +58,6 @@
             <td>{{ f.fixed_version or "" }}</td>
             <td>
               <form method="post" action="/findings/{{ f.id }}/status" class="mb-0">
-                    class="mb-0">
                 <select name="status"
                         class="form-select form-select-sm"
                         onchange="this.form.submit()">

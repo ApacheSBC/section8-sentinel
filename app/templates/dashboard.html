@@ -58,6 +58,7 @@
             <td>{{ f.fixed_version or "" }}</td>
             <td>
               <form method="post" action="/findings/{{ f.id }}/status" class="mb-0">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <select name="status"
                         class="form-select form-select-sm"
                         onchange="this.form.submit()">
